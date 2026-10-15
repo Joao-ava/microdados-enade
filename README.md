@@ -2,9 +2,12 @@
 
 ## Instalar
 
+O projeto requer Python 3.10 ou superior.
+
 ```sh
 python -m venv venv
-./venv/Scripts/Activate.ps1
+source venv/bin/activate  # Linux/macOS
+# .\venv\Scripts\Activate.ps1  # Windows PowerShell
 pip install -r requirements.txt
 ```
 
