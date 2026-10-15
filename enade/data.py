@@ -9,8 +9,8 @@ from tempfile import TemporaryDirectory
 CURRENT_PATH = Path(__file__).parent
 DATA_PATH = CURRENT_PATH / '..' / 'data'
 
-ENADE_DADOS_URL = 'http://download.inep.gov.br/microdados/microdados_enade_2023.zip'
-ENADE_DICIO_URL = 'http://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2023.zip'
+ENADE_DADOS_URL = 'http://download.inep.gov.br/microdados/microdados_enade_2021.zip'
+ENADE_DICIO_URL = 'http://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2021.zip'
 
 
 def download_file(url: str, destionation: str | Path):
@@ -29,7 +29,7 @@ def download_file(url: str, destionation: str | Path):
 
 
 def download_curso_dict():
-    content_path = DATA_PATH / 'MICRODADOS_CADASTRO_CURSOS_2023.csv'
+    content_path = DATA_PATH / 'MICRODADOS_CADASTRO_CURSOS_2021.csv'
     if content_path.exists():
         return
 
@@ -42,16 +42,21 @@ def download_curso_dict():
         with ZipFile(temp_file) as zip_file:
             zip_file.extractall(directory)
 
-        data_file = directory / 'microdados_censo_da_educacao_superior_2023' / 'dados' / 'MICRODADOS_CADASTRO_CURSOS_2023.CSV'
+        extracted_path = directory / 'Microdados do Censo da Educaç╞o Superior 2021' / 'dados'
+        data_files = [
+            extracted_path / 'MICRODADOS_CADASTRO_CURSOS_2021.CSV',
+            extracted_path / 'MICRODADOS_CADASTRO_IES_2021.CSV',
+        ]
 
         if not DATA_PATH.exists():
             makedirs(DATA_PATH)
 
-        shutil.copy(data_file, content_path)
+        for data_file in data_files:
+            shutil.copy(data_file, DATA_PATH / data_file.name)
 
 
 def download_data():
-    content_path = DATA_PATH / '2023'
+    content_path = DATA_PATH / '2021'
     if content_path.exists():
         return
 
@@ -64,7 +69,6 @@ def download_data():
         with ZipFile(temp_file) as zip_file:
             zip_file.extractall(directory)
 
-        print(list(directory.glob('*')))
-        data_dir = directory / 'Microdados_Enade_2023' / 'DADOS'
+        data_dir = directory / 'microdados_Enade_2021_LGPD' / '2.DADOS'
         data_dir.copy(content_path)
 
