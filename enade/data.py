@@ -70,5 +70,5 @@ def download_data():
             zip_file.extractall(directory)
 
         data_dir = directory / 'microdados_Enade_2021_LGPD' / '2.DADOS'
-        data_dir.copy(content_path)
+        shutil.copytree(data_dir, content_path)
 
