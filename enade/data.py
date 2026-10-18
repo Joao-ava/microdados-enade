@@ -57,7 +57,8 @@ def download_curso_dict():
 
 def download_data():
     content_path = DATA_PATH / "2021"
-    if content_path.exists():
+    leia_me_path = DATA_PATH / "2021_leia-me"
+    if content_path.exists() and leia_me_path.exists():
         return
 
     with TemporaryDirectory() as temp_dir:
@@ -69,5 +70,9 @@ def download_data():
         with ZipFile(temp_file) as zip_file:
             zip_file.extractall(directory)
 
-        data_dir = directory / "microdados_Enade_2021_LGPD" / "2.DADOS"
-        shutil.copytree(data_dir, content_path)
+        extracted_path = directory / "microdados_Enade_2021_LGPD"
+        if not content_path.exists():
+            shutil.copytree(extracted_path / "2.DADOS", content_path)
+        if not leia_me_path.exists():
+            # Dicionário de variáveis, manual e questionários do INEP
+            shutil.copytree(extracted_path / "1.LEIA-ME", leia_me_path)

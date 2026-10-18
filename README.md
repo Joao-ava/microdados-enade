@@ -18,3 +18,5 @@ pip install -r requirements.txt
 ```sh
 python enade/commands.py --download
 ```
+
+Os microdados ficam em `data/2021/` e o dicionário de variáveis do INEP (com manual e questionários) em `data/2021_leia-me/`.
