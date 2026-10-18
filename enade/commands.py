@@ -1,16 +1,16 @@
 import argparse
+
 import data
 
 
 def main():
     parser = argparse.ArgumentParser(
-        "enade",
-        description="CLI simples para facilitar o acesso aos dados do enade"
+        "enade", description="CLI simples para facilitar o acesso aos dados do enade"
     )
     parser.add_argument(
         "--download",
         action="store_true",
-        help="Baixa os arquivos de dados e dicionário"
+        help="Baixa os arquivos de dados e dicionário",
     )
 
     args = parser.parse_args()
@@ -24,5 +24,5 @@ def main():
         return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
