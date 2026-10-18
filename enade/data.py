@@ -72,3 +72,25 @@ def download_data():
         data_dir = directory / 'microdados_Enade_2021_LGPD' / '2.DADOS'
         data_dir.copy(content_path)
 
+
+def get_unifor_codes():
+    """
+    retorna os códigos da UNIFOR e do curso de Ciência da Computação
+    :return: (UNIFOR_IES_CODE, COMPUTER_SCIENCE_CODE)
+    """
+    import pandas as pd
+
+    course_codes = pd.read_csv(DATA_PATH / 'MICRODADOS_CADASTRO_CURSOS_2021.csv', encoding='ISO-8859-1', sep=';')
+    universities = pd.read_csv(DATA_PATH / 'MICRODADOS_CADASTRO_IES_2021.CSV', encoding='ISO-8859-1', sep=';')
+    courses = pd.merge(course_codes, universities, on='CO_IES')
+
+    # Pegar código da UNIFOR
+    UNIFOR_CO = courses[courses['SG_IES'] == 'UNIFOR']['CO_IES'].values[0]
+    courses_in_unifor = courses[courses['CO_IES'] == UNIFOR_CO]
+
+    # Pegar código de ciência da computação
+    computer_science_like = courses_in_unifor['NO_CURSO'].str.contains('da computa', case=False, na=False)
+    result = courses_in_unifor[computer_science_like][['NO_CURSO', 'CO_CURSO']]
+    COMPUTER_SCIENCE_CODE = result['CO_CURSO'].values[0]
+
+    return UNIFOR_CO, COMPUTER_SCIENCE_CODE
